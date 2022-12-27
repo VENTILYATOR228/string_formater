@@ -1,10 +1,10 @@
 
 def get_clean_office_name # clean_name
-  open_abbriviation
+  open_abbriviations
 end
 
 def get_sentence # sentence
-  "The candidate is running for the #{get_the_string} office."
+  "The candidate is running for the #{get_clean_office_name} office."
 end
 
 @the_string = 'Twp Committeeman/Wayne Twp'
