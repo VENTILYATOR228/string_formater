@@ -1,8 +1,11 @@
 
+def get_clean_office_name # clean_name
+  open_abbriviation
+end
 
-# def get_string_from_db # по-хорошему это должно быть вынесено отдельнo (я не знаю, что должно здесь происходить)
-#   @all_strings = SELECT candidate_office_name FROM hle_dev_test_viktor_solovei;
-# end
+def get_sentence # sentence
+  "The candidate is running for the #{get_the_string} office."
+end
 
 @the_string = 'Twp Committeeman/Wayne Twp'
 
@@ -12,8 +15,8 @@ def parce_position_name
   parts_of_office.unshift(place_of_position)
 end
 
-def split_position_name(position_sentence)
-  position_sentence.split('/')
+def split_position_name(position_sample)
+  position_sample.split('/')
 end
 
 def remove_duplications_and_format_case
@@ -29,8 +32,8 @@ def coma_formating
     unique_position_name
   else
     sentence_splited_by_coma = unique_position_name.split(', ')
-    place_in_breakits = sentence_splited_by_coma[1].split(' ').map(&:capitalize!)
-    "#{sentence_splited_by_coma[0]} (#{place_in_breakits.join(' ')})"
+    place_in_brackets = sentence_splited_by_coma[1].split(' ').map(&:capitalize!)
+    "#{sentence_splited_by_coma[0]} (#{place_in_brackets.join(' ')})"
   end
 end
 
@@ -44,14 +47,6 @@ end
 
 ###############
 
-def get_the_string # здесь я должен записать это значение в таблицу clean_name
-  open_abbriviation
-end
-
-def get_full_string # а здесь в таблицу sentence
-  "The candidate is running for the #{get_the_string} office."
-end
-
-p get_the_string
+p get_clean_office_name
 '\n'
-p get_full_string
+p get_sentence
