@@ -1,13 +1,32 @@
 
+require 'mysql2'
+
+DB = Mysql2::Client.new(
+
+)
+
+@result = DB.query('SELECT candidate_office_name FROM hle_dev_test_viktor_solovei').to_a.map(&:values).flatten
+
+def prepare_string(string)
+  return 'NO DATA' if string == ""
+  string.sub!(',/', '/') if string.scan(',/') != []
+  string.upcase
+end
+
+
+
 def get_clean_office_name # clean_name
-  open_abbriviations
+  @result.map do |position|
+    @the_string = prepare_string(position)
+    open_abbriviations
+  end
 end
 
 def get_sentence # sentence
-  "The candidate is running for the #{get_clean_office_name} office."
-end
-
-@the_string = 'Twp Committeeman/Wayne Twp'
+  get_clean_office_name.map do |position|
+    "The candidate is running for the #{position} office."
+  end
+end 
 
 def parce_position_name
   parts_of_office = split_position_name(@the_string)
@@ -20,6 +39,7 @@ def split_position_name(position_sample)
 end
 
 def remove_duplications_and_format_case
+  return parce_position_name[0].downcase! if parce_position_name.length == 1 
   position_with_duplication = parce_position_name.map { |part| part.downcase.split(' ') }
   position_with_duplication[1].shift if position_with_duplication[0].last == position_with_duplication[1].first
   position_with_duplication.first.map(&:capitalize!)
@@ -47,6 +67,6 @@ end
 
 ###############
 
-p get_clean_office_name
+puts get_clean_office_name
 '\n'
-p get_sentence
+puts get_sentence
