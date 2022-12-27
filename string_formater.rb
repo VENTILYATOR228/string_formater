@@ -5,7 +5,22 @@ DB = Mysql2::Client.new(
 
 )
 
-@result = DB.query('SELECT candidate_office_name FROM hle_dev_test_viktor_solovei').to_a.map(&:values).flatten
+def insert_data_into_table
+  db_rows.each do |row|
+    clean_name = get_clean_name(row.values.last)
+    sentence = get_sentence(clean_name)
+    update_row(row.values.first, clean_name, sentence)
+  end
+end
+
+def db_rows
+  DB.query('SELECT id, candidate_office_name FROM hle_dev_test_viktor_solovei').to_a
+end
+
+def update_row(row_id, clean_name, sentence)
+  DB.query("UPDATE hle_dev_test_viktor_solovei SET clean_name = #{clean_name}, sentence = #{sentence} WHERE id = #{row_id}")
+end
+
 
 def prepare_string(string)
   return 'NO DATA' if string == ""
@@ -13,19 +28,13 @@ def prepare_string(string)
   string.upcase
 end
 
-
-
-def get_clean_office_name # clean_name
-  @result.map do |position|
-    @the_string = prepare_string(position)
+def get_clean_name(candidate_office_name) # clean_name
+    @the_string = prepare_string(candidate_office_name)
     open_abbriviations
-  end
 end
 
-def get_sentence # sentence
-  get_clean_office_name.map do |position|
-    "The candidate is running for the #{position} office."
-  end
+def get_sentence(clean_name) # sentence
+  "The candidate is running for the #{clean_name} office."
 end 
 
 def parce_position_name
@@ -67,6 +76,5 @@ end
 
 ###############
 
-puts get_clean_office_name
-'\n'
-puts get_sentence
+# p insert_data_into_table
+p update_row(2, "Clean", "Very clean") 
