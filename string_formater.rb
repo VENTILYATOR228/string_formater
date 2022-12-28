@@ -18,13 +18,14 @@ def db_rows
 end
 
 def update_row(row_id, clean_name, sentence)
-  DB.query("UPDATE hle_dev_test_viktor_solovei SET clean_name = #{clean_name}, sentence = #{sentence} WHERE id = #{row_id}")
+  DB.query("UPDATE hle_dev_test_viktor_solovei SET clean_name = '#{clean_name}', sentence = '#{sentence}'  WHERE id = #{row_id}")
 end
 
 
 def prepare_string(string)
   return 'NO DATA' if string == ""
   string.sub!(',/', '/') if string.scan(',/') != []
+  string.sub!("'", "\'\'") if string.scan("'") != []
   string.upcase
 end
 
@@ -76,5 +77,4 @@ end
 
 ###############
 
-# p insert_data_into_table
-p update_row(2, "Clean", "Very clean") 
+p insert_data_into_table 
