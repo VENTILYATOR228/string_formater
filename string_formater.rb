@@ -69,7 +69,8 @@ end
 
 def open_abbriviations
   open_abbr = coma_formating
-  open_abbr.sub!('Twp', 'Township') || open_abbr.sub!('twp', 'Township') 
+  open_abbr.sub!('Twp', 'Township') || open_abbr.sub!('twp', 'Township')
+  open_abbr.sub!('Township Township', 'Township') || open_abbr.sub!('Township township', 'Township')
   open_abbr.sub!('Hwy', 'Highway') || open_abbr.sub!('hwy', 'Highway')
   open_abbr.sub!('.', '')
   open_abbr
